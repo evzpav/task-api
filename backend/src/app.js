@@ -13,6 +13,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const path = require('path');
 
 const app = express();
 
@@ -41,6 +42,10 @@ app.use(cors());
 app.options('*', cors());
 
 app.use(cookieParser());
+
+if (config.env === 'production') {
+	app.use('/', express.static(path.join(__dirname, '../../frontend/build')));
+}
 
 // jwt authentication
 app.use(jwt());

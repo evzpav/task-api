@@ -2,6 +2,11 @@
 
 It is a Node CRUD boilerplate using Postgres with frontend in React.
 
+## Requirements
+    Node v20.16.0 
+    Docker
+    Make
+
 ## Install dependencies
 ```
     make install
@@ -12,10 +17,10 @@ It is a Node CRUD boilerplate using Postgres with frontend in React.
    make run-postgres
 ```
 
-## Run migrations
+<!-- ## Run migrations
 ```bash
    make sql-scripts
-```
+``` -->
 
 ## Running
 ### Local development

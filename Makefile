@@ -7,7 +7,6 @@ VERSION = 1.0.0
 all: install build-front ## Run pipeline
 
 install: ## install server and frontend dependencies locally
-	npm install
 	cd ./frontend && yarn install
 	cd ./backend && yarn install
 

@@ -23,10 +23,11 @@ const envVarsSchema = Joi.object()
 			.default(24)
 			.description('hours after which httpOnly cookie expire'),
 
-		SQL_USERNAME: Joi.string().description('sqldb username'),
-		SQL_HOST: Joi.string().description('sqldb host'),
-		SQL_DATABASE_NAME: Joi.string().description('sqldb database name'),
-		SQL_PASSWORD: Joi.string().description('sqldb password'),
+		DATABASE_URL: Joi.string().description('postgres url'),
+		// SQL_USERNAME: Joi.string().description('sqldb username'),
+		// SQL_HOST: Joi.string().description('sqldb host'),
+		// SQL_DATABASE_NAME: Joi.string().description('sqldb database name'),
+		// SQL_PASSWORD: Joi.string().description('sqldb password'),
 		SQL_DIALECT: Joi.string()
 			.default('postgres')
 			.description('type of sqldb'),
@@ -62,6 +63,24 @@ if (error) {
 	throw new Error(`Config validation error: ${error.message}`);
 }
 
+
+const url = new URL(envVars.DATABASE_URL);
+
+// Extract components
+const protocol = url.protocol.slice(0, -1); // Remove the trailing ':'
+const username = url.username;
+const password = url.password;
+const host = url.hostname;
+const port = url.port;
+const database = url.pathname.split('/')[1]; // Remove the leading '/'
+
+console.log('Protocol:', protocol);
+console.log('Username:', username);
+console.log('Password:', password);
+console.log('Host:', host);
+console.log('Port:', port);
+console.log('Database:', database);
+
 module.exports = {
 	env: envVars.NODE_ENV,
 	port: envVars.PORT,
@@ -79,10 +98,11 @@ module.exports = {
 		cookieExpirationHours: envVars.COOKIE_EXPIRATION_HOURS,
 	},
 	sqlDB: {
-		user: envVars.SQL_USERNAME,
-		host: envVars.SQL_HOST,
-		database: envVars.SQL_DATABASE_NAME,
-		password: envVars.SQL_PASSWORD,
+		user: username,
+		host: host,
+		database: database,
+		password: password,
+		port: port,
 		dialect: envVars.SQL_DIALECT,
 		pool: {
 			max: envVars.SQL_MAX_POOL,
